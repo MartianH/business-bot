@@ -1,17 +1,11 @@
-/*
-
-LUIS DEMO
-
- vraaag: hoe kan ik jullie communiceren? of variatie hiervan
- enige medium is momenteel enkel 'telefoon, gsm, telephone'
- de rest wordt later geimplementeerd. dit is slechts een demo.
-
-*/
-
 require('dotenv-extended').load();
 
 var restify = require('restify');
 var builder = require('botbuilder');
+var service = require('./service');
+var fs = require('fs');
+var util = require('util');
+var text = JSON.parse(fs.readFileSync('lang.json', 'utf-8'))
 
 
 var connector = new builder.ChatConnector({
@@ -24,28 +18,53 @@ var bot = new builder.UniversalBot(connector);
 const LuisUrl = process.env.LUIS_MODEL_URL;
 var recognizer = new builder.LuisRecognizer(LuisUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] });
+var language;
 
 
 intents.matches('contact', [
 	function (session, args, next) {
-		var medium = builder.EntityRecognizer.findEntity(args.entities, 'medium')
-		if (!medium) {
-			builder.Prompts.text(session, "Via welk communicatie kanaal?");
+		var echoMessage = session.message.text;
+		language = service.detectLanguage(echoMessage)
+		console.log('\n-DETECTED LANGUAGE-\n' + language);
+		var phoneMedium = builder.EntityRecognizer.findEntity(args.entities, 'medium::phone');
+		var emailMedium = builder.EntityRecognizer.findEntity(args.entities, 'medium::email');
+
+		if (phoneMedium) {
+			session.send(util.format('%s %s', text[language].contactNummer, service.getPhoneNumber()));
+		}
+		else if (emailMedium) {
+			session.send(util.format('%s %s', text[language].contactEmail, service.getEmail()));
 		} else {
-			next({ response : medium.entity });
+			builder.Prompts.choice(session, text[language].whichChannel, [text[language].phone, text[language].email]);
+		}
+	},
+	function (session, results, next) {
+		if (results.response.entity == text[language].phone) {
+			session.send(util.format('%s %s', text[language].contactNummer, service.getPhoneNumber()));
+			builder.Prompts.choice(session, text[language].satisfaction, [text[language].yes,  text[language].no]);
+		}
+		else if (results.response.entity == text[language].email) {
+			session.send(util.format('%s %s', text[language].contactEmail, service.getEmail()));
+			builder.Prompts.choice(session, text[language].satisfaction, [text[language].yes,  text[language].no]);
+		}
+	},
+	function (session, results, next) {
+		if (results.response.entity = text[language].no) {
+			builder.Prompts.text(session, text[language].problem);
+		}
+		else if(results.response.entity == text[language].yes) {
+			session.send(text[language].good);
+			session.endConversation();
 		}
 	},
 	function (session, results) {
-		if (results.response == "telefoon" || results.response == "gsm" || results.response == "telephone") {
-			session.send('U kunt ons bereiken met het nummer 02 343 434 09');
-		} else {
-			session.send('Momenteel enker bereikbaar via telefoon, onze excuses.');
-		}
+         service.makeCase(results.response);
+         session.send(text[language].caseConfirm);
+         session.endConversation();
 	}
 ])
 .onDefault((session, args) => {
-	console.log(args);
-	session.send('Sorry, I did not get that.');
+	session.send(text[language].didNotUnderstand);
 });
 
 bot.dialog('/', intents);

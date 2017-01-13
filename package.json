@@ -23,6 +23,7 @@
   "homepage": "https://github.com/MartianH/business-bot#readme",
   "dependencies": {
     "botbuilder": "^3.4.4",
+    "cld": "^2.4.7",
     "dotenv-extended": "^1.0.4",
     "restify": "^4.3.0"
   }

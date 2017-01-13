@@ -1,0 +1,44 @@
+{
+	"DUTCH": {
+		"contactNummer": "U kunt ons bereiken met het nummer",
+		"contactEmail": "Ons email adres is",
+		"satisfaction":"Tevreden met het antwoord?",
+		"email":"email",
+		"phone":"telefoon",
+		"yes":"ja",
+		"no":"nee",
+		"problem":"Oei... wat was het probleem?",
+		"good":"Goed om te horen! Dank u en goede dag!",
+		"didNotUnderstand":"Sorry, Heb ik niet begrepen.",
+		"caseConfirm":"Perfect! Het werd doorgestuurd! Bye!",
+		"whichChannel":"Welk communicatie medium?"
+	},
+	"FRENCH": {
+		"contactNummer": "Vous pouvez nous contacter avec le numero",
+		"contactEmail": "Vous pouvez nous contactez avec l'adresse email",
+		"satisfaction":"?",
+		"email":"courriel",
+		"phone":"telephone",
+		"yes":"oui",
+		"no":"non",
+		"problem":"Ah... Pourriez-vous expliquer le problem?",
+		"good":"Excellent! Merci a vous et au revoir!",
+		"didNotUnderstand":"Pardon, je n'ai pas compris.",
+		"caseConfirm":"Parfait! L'astuce  est envoyer! Au revoir!",
+		"whichChannel":"Quel chaine de communication?"
+	},
+	"ENGLISH": {
+		"contactNummer": "You can contact us with the number",
+		"contactEmail": "You can contact us with the email address",
+		"satisfaction":"Did this answer your question?",
+		"email":"email",
+		"phone":"phone",
+		"yes":"yes",
+		"no":"no",
+		"problem":"Oh... what did the problem consist of?",
+		"good":"Excellent! Thank you and have a nice one!",
+		"didNotUnderstand":"Sorry, I did not understand that.",
+		"caseConfirm":"Perfect! It has been send! Bye!",
+		"whichChannel":"Which communication medium?"
+	}
+}
