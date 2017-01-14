@@ -20,6 +20,21 @@ var recognizer = new builder.LuisRecognizer(LuisUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 var language;
 
+intents.matches('greeting', [
+	function (session, args) {
+		session.send("Hey :)");
+	}
+])
+
+
+intents.matches('howareyou', [
+	function (session, args) {
+		var echoMessage = session.message.text;
+		language = service.detectLanguage(echoMessage)
+		session.send(text[language].greetingReply);
+	}
+])
+
 
 intents.matches('contact', [
 	function (session, args, next) {

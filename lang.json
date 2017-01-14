@@ -11,7 +11,8 @@
 		"good":"Goed om te horen! Dank u en goede dag!",
 		"didNotUnderstand":"Sorry, Heb ik niet begrepen.",
 		"caseConfirm":"Perfect! Het werd doorgestuurd! Bye!",
-		"whichChannel":"Welk communicatie medium?"
+		"whichChannel":"Welk communicatie medium?",
+		"greetingReply":"Zeer goed! Probeer een vraag te stellen in verband met contact ;)"
 	},
 	"FRENCH": {
 		"contactNummer": "Vous pouvez nous contacter avec le numero",
@@ -25,7 +26,8 @@
 		"good":"Excellent! Merci a vous et au revoir!",
 		"didNotUnderstand":"Pardon, je n'ai pas compris.",
 		"caseConfirm":"Parfait! L'astuce  est envoyer! Au revoir!",
-		"whichChannel":"Quel chaine de communication?"
+		"whichChannel":"Quel chaine de communication?",
+		"greetingReply":"Tres bien! Essayer de demander une question comment nous contacter ;)"
 	},
 	"ENGLISH": {
 		"contactNummer": "You can contact us with the number",
@@ -39,6 +41,7 @@
 		"good":"Excellent! Thank you and have a nice one!",
 		"didNotUnderstand":"Sorry, I did not understand that.",
 		"caseConfirm":"Perfect! It has been send! Bye!",
-		"whichChannel":"Which communication medium?"
+		"whichChannel":"Which communication medium?",
+		"greetingReply":"Very good, actually! Try asking a question how to contact us ;)"
 	}
 }
