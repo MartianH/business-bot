@@ -30,29 +30,52 @@ intents.matches('contact', [
 		var emailMedium = builder.EntityRecognizer.findEntity(args.entities, 'medium::email');
 
 		if (phoneMedium) {
-			session.send(util.format('%s %s', text[language].contactNummer, service.getPhoneNumber()));
+			service
+				.getPhoneNumber()
+				.then( function(number){
+					session.send(util.format('%s %s', text[language].contactNummer, number));
+					builder.Prompts.choice(session, text[language].satisfaction, [text[language].yes,  text[language].no]);
+				});
 		}
 		else if (emailMedium) {
-			session.send(util.format('%s %s', text[language].contactEmail, service.getEmail()));
+			service
+				.getEmail()
+				.then( function(email){
+					session.send(util.format('%s %s', text[language].contactEmail, email));
+					builder.Prompts.choice(session, text[language].satisfaction, [text[language].yes,  text[language].no]);
+				});
 		} else {
 			builder.Prompts.choice(session, text[language].whichChannel, [text[language].phone, text[language].email]);
 		}
 	},
 	function (session, results, next) {
 		if (results.response.entity == text[language].phone) {
-			session.send(util.format('%s %s', text[language].contactNummer, service.getPhoneNumber()));
-			builder.Prompts.choice(session, text[language].satisfaction, [text[language].yes,  text[language].no]);
+			service
+				.getPhoneNumber()
+				.then( function(number){
+					session.send(util.format('%s %s', text[language].contactNummer, number));
+					builder.Prompts.choice(session, text[language].satisfaction, [text[language].yes,  text[language].no]);
+				});
 		}
 		else if (results.response.entity == text[language].email) {
-			session.send(util.format('%s %s', text[language].contactEmail, service.getEmail()));
-			builder.Prompts.choice(session, text[language].satisfaction, [text[language].yes,  text[language].no]);
+			service
+				.getEmail()
+				.then( function(email){
+					session.send(util.format('%s %s', text[language].contactEmail, email));
+					builder.Prompts.choice(session, text[language].satisfaction, [text[language].yes,  text[language].no]);
+			});
+		}
+		else {
+			next({response:results.response});
 		}
 	},
 	function (session, results, next) {
-		if (results.response.entity = text[language].no) {
+		if (results.response.entity == text[language].no) {
+			console.log(results.response.entity);
 			builder.Prompts.text(session, text[language].problem);
 		}
 		else if(results.response.entity == text[language].yes) {
+			console.log(results.response.entity);
 			session.send(text[language].good);
 			session.endConversation();
 		}

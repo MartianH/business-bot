@@ -1,4 +1,14 @@
-//Test 
+var github = require('octonode');
+var promise = require('promise');
+
+var client = github.client({
+  username: process.env.GITHUB_USERNAME,
+  password: process.env.GITHUB_PASSWORD
+},{
+  hostname: 'api.github.com'
+});
+
+
 var args = process.argv.slice(2);
 require('cld').detect(args[0], function(err, result) {
   if (err) {
@@ -26,11 +36,31 @@ exports.detectLanguage = function (phrase) {
 };
 
 exports.getEmail = function () {
-	return "bnd@bnd.benelux.be"
+	return new Promise (function (resolve, reject) {
+		var ghme = client.me();
+
+		ghme.emails(function (err, result) {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(result[0].email);
+			}
+		})
+	});
 };
 
 exports.getPhoneNumber = function () {
-	return "+322 343 434 09"
+	return new Promise (function (resolve, reject) {
+		var ghme = client.me();
+
+		ghme.info(function (err, result) {
+			if (err) {
+				reject(err);
+			} else {
+				resolve(result.blog);
+			}
+		})
+	});
 };
 
 exports.makeCase = function (title, body) {
