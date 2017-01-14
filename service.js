@@ -1,7 +1,3 @@
-var LanguageDetect = require('languagedetect');
-var lngDetector = new LanguageDetect();
-
-
 //Test 
 var args = process.argv.slice(2);
 require('cld').detect(args[0], function(err, result) {
