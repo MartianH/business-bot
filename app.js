@@ -23,9 +23,9 @@ var language;
 
 intents.matches('contact', [
 	function (session, args, next) {
+		var echoMessage = session.message.text;
+		language = service.detectLanguage(echoMessage)
 		if (typeof(language) != 'undefined') {
-			var echoMessage = session.message.text;
-			language = service.detectLanguage(echoMessage)
 			console.log('\n-DETECTED LANGUAGE-\n' + language);
 			var phoneMedium = builder.EntityRecognizer.findEntity(args.entities, 'medium::phone');
 			var emailMedium = builder.EntityRecognizer.findEntity(args.entities, 'medium::email');
@@ -85,6 +85,7 @@ intents.matches('contact', [
 		}
 	},
 	function (session, results) {
+		console.log("\nRESPONSE\n" + results.response);
          service.makeCase(results.response);
          session.send(text[language].caseConfirm);
          session.endConversation();
