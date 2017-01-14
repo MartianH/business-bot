@@ -63,6 +63,18 @@ exports.getPhoneNumber = function () {
 	});
 };
 
-exports.makeCase = function (title, body) {
-
+exports.makeCase = function (title) {
+	return new Promise (function (resolve, reject) {
+		var ghrepo = client.repo('BusinessNDecision/business-bot');;
+		ghrepo.issue({
+		  "title": title,
+		}, function(err, response) {
+			if (!err) {
+				reject(err);
+			}
+			else {
+				resolve(response);
+			}
+		});
+	})
 }
