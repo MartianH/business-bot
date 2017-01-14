@@ -23,29 +23,33 @@ var language;
 
 intents.matches('contact', [
 	function (session, args, next) {
-		var echoMessage = session.message.text;
-		language = service.detectLanguage(echoMessage)
-		console.log('\n-DETECTED LANGUAGE-\n' + language);
-		var phoneMedium = builder.EntityRecognizer.findEntity(args.entities, 'medium::phone');
-		var emailMedium = builder.EntityRecognizer.findEntity(args.entities, 'medium::email');
+		if (typeof(language) != 'undefined') {
+			var echoMessage = session.message.text;
+			language = service.detectLanguage(echoMessage)
+			console.log('\n-DETECTED LANGUAGE-\n' + language);
+			var phoneMedium = builder.EntityRecognizer.findEntity(args.entities, 'medium::phone');
+			var emailMedium = builder.EntityRecognizer.findEntity(args.entities, 'medium::email');
 
-		if (phoneMedium) {
-			service
-				.getPhoneNumber()
-				.then( function(number){
-					session.send(util.format('%s %s', text[language].contactNummer, number));
-					builder.Prompts.choice(session, text[language].satisfaction, [text[language].yes,  text[language].no]);
-				});
-		}
-		else if (emailMedium) {
-			service
-				.getEmail()
-				.then( function(email){
-					session.send(util.format('%s %s', text[language].contactEmail, email));
-					builder.Prompts.choice(session, text[language].satisfaction, [text[language].yes,  text[language].no]);
-				});
+			if (phoneMedium) {
+				service
+					.getPhoneNumber()
+					.then( function(number){
+						session.send(util.format('%s %s', text[language].contactNummer, number));
+						builder.Prompts.choice(session, text[language].satisfaction, [text[language].yes,  text[language].no]);
+					});
+			}
+			else if (emailMedium) {
+				service
+					.getEmail()
+					.then( function(email){
+						session.send(util.format('%s %s', text[language].contactEmail, email));
+						builder.Prompts.choice(session, text[language].satisfaction, [text[language].yes,  text[language].no]);
+					});
+			} else {
+				builder.Prompts.choice(session, text[language].whichChannel, [text[language].phone, text[language].email]);
+			}
 		} else {
-			builder.Prompts.choice(session, text[language].whichChannel, [text[language].phone, text[language].email]);
+			session.send('Taal werd niet begrepen, enkel frans, engels, nederlands. Probeer een langere zin?');
 		}
 	},
 	function (session, results, next) {
@@ -87,7 +91,15 @@ intents.matches('contact', [
 	}
 ])
 .onDefault((session, args) => {
-	session.send(text[language].didNotUnderstand);
+	var echoMessage = session.message.text;
+	language = service.detectLanguage(echoMessage);
+	if (typeof(language) != 'undefined') {
+		console.log('\n-DETECTED LANGUAGE-\n' + language);
+		session.send(text[language].didNotUnderstand);
+	}
+	else {
+		session.send('Taal werd niet begrepen, enkel frans, engels, nederlands. Probeer een langere zin?');
+	}
 });
 
 bot.dialog('/', intents);
